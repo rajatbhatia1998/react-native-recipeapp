@@ -45,19 +45,18 @@ class MealDetails extends React.Component {
         }))
 
         AsyncStorage.getItem('Favorites',(err,result)=>{
-            
-            const favs = JSON.parse(result)
-            if(favs.indexOf(this.id)!==-1){
-              
+            if(result!==null){
+                const favs = JSON.parse(result)
+                if(favs.indexOf(this.id)!==-1){
                 this.setState({inFav:true})
-            }else{
-                
+                }else{
+                    
+                }
             }
         })
 
     }
-    addToFav=(mealId)=>{  
-             
+    addToFav=(mealId)=>{     
         AsyncStorage.getItem('Favorites', (err, result) => {
             const id = [mealId];
             var newIds = []

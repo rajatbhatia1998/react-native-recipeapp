@@ -2,10 +2,22 @@ import React,{useState,useEffect} from 'react'
 import {View,Text,StyleSheet,TouchableOpacity,FlatList,ImageBackground} from 'react-native'
 import Colors from '../constant/Colors'
 import { Constants } from 'expo'
-
+import { SearchBar } from 'react-native-elements';
 
 
 export default function CategoriesScreen(props) {
+
+    const [categories,setCategories] = useState([])
+    const [search,setSearch] = useState("")
+    const [cat,setCat] = useState([])
+    useEffect(()=>{
+        fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
+        .then(res=>res.json())
+        .then(data=>{
+            setCat(data.categories)
+            setCategories(data.categories)})
+        .catch(err=>console.log(err))
+    },[])
 
     const renderCategory=(itemData)=>{
         return(
@@ -25,18 +37,32 @@ export default function CategoriesScreen(props) {
             </TouchableOpacity>
         )
         }
-    const [categories,setCategories] = useState([])
-    useEffect(()=>{
-        fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
-        .then(res=>res.json())
-        .then(data=>setCategories(data.categories))
-        .catch(err=>console.log(err))
-    },[])
+  const updateSearch=(text)=>{
+      
+      var updatedList = cat
+       updatedList = updatedList.filter(function(item){
+        return item.strCategory.toLowerCase().search(
+          text.toLowerCase()) !== -1;
+      });
+      setCategories(updatedList)
+      setSearch(text)
+     
+  }
+   
     
     return (
         <View style={styles.container}>
+        <SearchBar
+        lightTheme={true}
+        round={true}
+        platform="android"
+        placeholder="Search Category..."
+        onChangeText={updateSearch}
+        value={search}
+        />
         {categories.length>0?
             <FlatList
+             style={{marginVertical:10}}
             keyExtractor={(item,index)=>item.idCategory}
             data={categories}
             renderItem={(itemData)=>renderCategory(itemData)}
@@ -54,6 +80,7 @@ export default function CategoriesScreen(props) {
 const styles = StyleSheet.create({
     container:{
         flex:1,
+        padding:10
     },
     category:{
         flex:1,
@@ -86,5 +113,6 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFill,
         backgroundColor: 'rgba(0,0,0,0.5)',
         borderRadius:20,
-    }
+    },
+  
 })

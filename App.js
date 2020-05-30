@@ -8,25 +8,25 @@ import {Provider} from 'react-redux'
 import favoriteReducer from './reducer/favoriteReducer'
 
 
-const loadFont= async()=>{
- await Font.loadAsync({
-  "open-sans":require('./assets/fonts/OpenSans-Regular.ttf'),
-  "open-sans-bold":require('./assets/fonts/OpenSans-Bold.ttf')
-  })
-}
+
 export default function App() {
   const [showSplash,setShowSplash] = useState(true)
   const store = createStore(
-    favoriteReducer,
- 
-    )
+    favoriteReducer)
+    const loadFont= async()=>{
+      await Font.loadAsync({
+       "open-sans":require('./assets/fonts/OpenSans-Regular.ttf'),
+       "open-sans-bold":require('./assets/fonts/OpenSans-Bold.ttf')
+       })
+     }
   useEffect(()=>{
     loadFont();
     setTimeout(()=>{
       setShowSplash(false)
-    },3000)
+    },2000
+    )
   },[])
-  console.log(store.getState())
+  
   return (
     <Provider store={store}>
       <View style={styles.container}>
