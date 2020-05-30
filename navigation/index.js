@@ -8,7 +8,7 @@ import CategoriesScreen from '../screen/CategoriesScreen'
 import FavoritesScreen from '../screen/FavoritesScreen'
 import CategoriesMeals from '../screen/CategoriesMeals'
 import MealDetails from '../screen/MealDetails'
-
+import SplashScreen from '../screen/SplashScreen'
 const HomeScreenNavigator=()=>{
     const Stack = createStackNavigator();
     return(
@@ -19,6 +19,7 @@ const HomeScreenNavigator=()=>{
            headerTintColor:Colors.primary,
         }}
         >
+              
                  <Stack.Screen name="Categories" component={CategoriesScreen}  />
                  <Stack.Screen name="Meals" component={CategoriesMeals} />
                  <Stack.Screen name="Meal Details" component={MealDetails}

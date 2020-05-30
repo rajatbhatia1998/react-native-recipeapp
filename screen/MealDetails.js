@@ -3,7 +3,6 @@ import {View,
     Text,
     StyleSheet,
     TouchableOpacity,
-    Image,
     ActivityIndicator,
     ScrollView,
     SafeAreaView,
@@ -15,13 +14,15 @@ import {View,
     AsyncStorage
     
 } from 'react-native'
+import {connect} from 'react-redux'
+import setFavorites from '../action/favoriteAction'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constant/Colors'
 
 
 
 
-export default class MealDetails extends React.Component {
+class MealDetails extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -47,10 +48,10 @@ export default class MealDetails extends React.Component {
             
             const favs = JSON.parse(result)
             if(favs.indexOf(this.id)!==-1){
-                //console.log("IN fav"+this.id)
+              
                 this.setState({inFav:true})
             }else{
-                //console.log("not in fav"+this.id)
+                
             }
         })
 
@@ -59,22 +60,43 @@ export default class MealDetails extends React.Component {
              
         AsyncStorage.getItem('Favorites', (err, result) => {
             const id = [mealId];
+            var newIds = []
             if (result !== null) {
-              var newIds = JSON.parse(result).concat(id);
-              AsyncStorage.setItem('Favorites', JSON.stringify(newIds),()=>{
-                this.setState({inFav:true})
-              });
+              
+              if(JSON.parse(result.indexOf(mealId))!==-1){
+                 //deleting meal is exist
+                 newIds = JSON.parse(result)
+                 var index = newIds.indexOf(mealId)
+                 newIds.splice(index,index+1)
+                 
+                 AsyncStorage.setItem('Favorites', JSON.stringify(newIds),()=>{
+                    this.setState({inFav:false})
+                    this.props.setFavorites(newIds)
+                    //console.log(`Meal deleted ${mealId} in ${newIds}`)
+                });
+                
+              }else{
+                  //adding meal if not exist
+                 newIds = JSON.parse(result).concat(id);
+                 AsyncStorage.setItem('Favorites', JSON.stringify(newIds),()=>{
+                    this.setState({inFav:true})
+                    this.props.setFavorites(newIds)
+                   // console.log(`Meal added ${mealId} in ${newIds}`)
+                });
+              }
+              
+              
             } else {
-             
+             //Adding id for first time
               AsyncStorage.setItem('Favorites', JSON.stringify(id),()=>{
                 this.setState({inFav:true})
+                this.props.setFavorites(id)
               });
               
             }
           });
     }
      getIngredients=()=>{
-        
         var meal = this.state.meal
         const ing = []
         for (var key of Object.keys(meal)) {
@@ -203,8 +225,6 @@ export default class MealDetails extends React.Component {
 
 
 
-
-
 const styles = StyleSheet.create({
     container:{
         flex:1,
@@ -276,4 +296,9 @@ const styles = StyleSheet.create({
         fontSize:17
     }
 })
+
+  const mapDispatchToProps = dispatch => ({
+    setFavorites:(payload)=> dispatch(setFavorites(payload))
+  })
+export default connect(null,mapDispatchToProps)(MealDetails)
 

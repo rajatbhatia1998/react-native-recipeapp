@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     card:{
         flex:1,
         backgroundColor:"white",
-        elevation:5,
+        elevation:1,
         flexDirection:'column',
         marginHorizontal:10
     },

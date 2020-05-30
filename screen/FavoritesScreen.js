@@ -2,58 +2,53 @@ import React,{useEffect,useState} from 'react'
 import {View,
     Text,
     StyleSheet,
-    AsyncStorage
+    AsyncStorage,
+    Dimensions
 } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
-
-
+import FavMeal from '../components/FavMeal'
+import {useSelector} from 'react-redux'
 export default function FavoritesScreen(props) {
+    
+    const ids = useSelector(state=>state.meals)
     useEffect(()=>{
         AsyncStorage.getItem('Favorites',(err,result)=>{
             console.log(result)
+           // setIds(JSON.parse(result))
         })
+       
     },[])
+    console.log(ids)
     const renderMeal=(itemData)=>{
         const item = itemData.item
         const navigation = props.navigation
         return(
-            <TouchableHighlight
-            style={styles.card}
-            activeOpacity={0.9}
-            underlayColor="#e5e5e5"
-            onPress={()=>{
-                navigation.navigate('Meal Details',{
-                    id:item.idMeal
-                })
-            }}
-            >
-                <View>
-                    <Image source={{uri:item.strMealThumb}}
-                    style={{
-                    width:(Dimensions.get('screen').width /2)-20,
-                    height:130,
-                    resizeMode:'stretch'}}
-                    />
-                    
-                    <Text style={styles.text}>{item.strMeal}</Text>
-                </View>
-            </TouchableHighlight>
-            
+           
+            <FavMeal navigation={navigation} id={item}/>
         )
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Your Favorites</Text>
-            <Carousel
-            data={topMeals}
+        {ids.length>=1?  <Text style={styles.title}>Your Favorites</Text>:null}
+          
+            {ids.length>=1?
+                <Carousel 
+            data={ids}
             renderItem={renderMeal}
-            layout={'default'}
-            itemWidth={Dimensions.get('screen').width/2}
+            layout={'stack'}
+            layoutCardOffset={18}
+            itemWidth={Dimensions.get('screen').width+1}
             sliderWidth={Dimensions.get('screen').width}
            
-            slideStyle={{height:300}}
-          />
-        </View>
+            sliderHeight={200}
+            slideStyle={{flex:4,height:300,padding:10}}
+          />:
+          <Text style={styles.title}>No Meals to Display</Text>
+            }
+            
+            </View>
+       
+        
     )
 }
 
@@ -61,17 +56,14 @@ export default function FavoritesScreen(props) {
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        padding:10
+        flexDirection:'column',
+        padding:10,
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:24
     },
     title:{
         fontFamily:'open-sans-bold',
         fontSize:20
-    },
-    card:{
-        flex:1,
-        backgroundColor:"white",
-        elevation:5,
-        flexDirection:'column',
-        marginHorizontal:10
-    },
+    }
 })
