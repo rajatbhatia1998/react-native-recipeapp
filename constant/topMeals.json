@@ -1,0 +1,32 @@
+[
+    {
+        "idMeal": "52935",
+        "strMeal": "Steak Diane",
+        "strMealThumb": "https://www.themealdb.com/images/media/meals/vussxq1511882648.jpg"
+    },
+    {
+        "idMeal": "52943",
+        "strMeal": "Oxtail with broad beans",
+        "strMealThumb": "https://www.themealdb.com/images/media/meals/1520083578.jpg"
+    },
+    {
+        "idMeal": "53013",
+        "strMeal": "Big Mac",
+        "strMealThumb": "https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg"
+    },
+    {
+        "idMeal": "52941",
+        "strMeal": "Red Peas Soup",
+        "strMealThumb": "https://www.themealdb.com/images/media/meals/sqpqtp1515365614.jpg"
+    },
+    {
+        "idMeal": "52878",
+        "strMeal": "Beef and Oyster pie",
+        "strMealThumb": "https://www.themealdb.com/images/media/meals/wrssvt1511556563.jpg"
+    },
+    {
+        "idMeal": "52781",
+        "strMeal": "Irish stew",
+        "strMealThumb": "https://www.themealdb.com/images/media/meals/sxxpst1468569714.jpg"
+    }
+]
